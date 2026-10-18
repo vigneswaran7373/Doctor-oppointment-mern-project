@@ -1,0 +1,25 @@
+# Render Blueprint: creates the API service from this file (New + > Blueprint).
+services:
+  - type: web
+    name: careslot-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: NODE_ENV
+        value: production
+      - key: TZ
+        value: Asia/Kolkata  # appointment slots and "past time" checks use Indian time, not UTC
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGO_URI
+        sync: false          # you paste your MongoDB Atlas string (database name /doctor_appointments)
+      - key: CLIENT_URL
+        sync: false          # you paste your Vercel URL after the Vercel step
+      - key: SEED_ON_EMPTY
+        value: true          # demo admin, patient and doctors on first boot
